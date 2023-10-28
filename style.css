@@ -20,7 +20,7 @@ body{
     flex-wrap: wrap;
 }
 button{
-    border: none;
+    border: 1px solid black;
     justify-content: center;
     align-items: center;
     border-radius:100% ;
