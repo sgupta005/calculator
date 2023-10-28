@@ -48,27 +48,22 @@ function operatorClick(event){
     if (operatorRegex.test(screen.value)){
         values = screen.value.split(operatorRegex);
         num2 = values[1];
-        console.log('running if')
-        console.log(num1,num2,operator);
         result = operate(num1,num2,operator);
-        console.log(result);
         num1 = result;
         operator = event.target.textContent;
         screen.value = result + operator;
         num2 = null;   
-        console.log(num1,num2,operator);
     }else{
-        console.log('running else');
         num1 = screen.value;
-        console.log(num1);
         operator = event.target.textContent;
-        console.log(operator);
         screen.value+=event.target.textContent;
     }
 }
 
-// equals_button = document.querySelector('.equals');
-// equals_button.addEventListener('click', ()=>{
-//     result = operate(num1,num2,operator);
-//     console.log(result);
-// })
+equals_button = document.querySelector('.equals');
+equals_button.addEventListener('click', ()=>{
+    values = screen.value.split(operatorRegex);
+    num2 = values[1];
+    result = operate(num1,num2,operator);
+    screen.value = result;
+})
