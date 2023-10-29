@@ -1,5 +1,5 @@
 function add(num1,num2){
-    return Number(num1)+Number(num2);
+    return (Number(num1)+Number(num2)).toFixed(3);
 }
 function subtract(num1,num2){
     return Number(num1)-Number(num2);
@@ -12,6 +12,11 @@ function divide(num1,num2){
 }
 function remainder(num1,num2){
     return Number(num1)%Number(num2);
+}
+
+function limitToThreeDecimalPlaces(number){
+    let roundedNumber = Math.round(number*1000)/1000;
+    return roundedNumber;
 }
 
 function operate(num1,num2,operator){
@@ -27,7 +32,7 @@ function operate(num1,num2,operator){
     }else if(operator == '%'){
         result = remainder(num1,num2);
     }
-    return result;
+    return limitToThreeDecimalPlaces(result);
 }
 
 const screen = document.querySelector('#screen-input');
@@ -96,4 +101,17 @@ function clear(){
         num1 = num1.toString().slice(0,-1);
     }
     screen.value = screen.value.slice(0,-1);
+}
+
+decimal_button = document.querySelector('.decimal');
+decimal_button.addEventListener('click', decimalClick);
+function decimalClick(event){
+    if (screen.value.slice(-1)!=='.' && screen.value &&!operatorRegex.test(screen.value.slice(-1))){
+        if (operatorRegex.test(screen.value)){
+            num2+=event.target.textContent;
+        }else{
+            num1+=event.target.textContent;
+        }
+        screen.value += event.target.textContent;
+    }
 }

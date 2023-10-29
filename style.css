@@ -6,10 +6,17 @@ body{
     align-items: center;
 }
 .screen{
-    border: 2px solid gray;
+    border: none;
     height: 50px;
     width: 270px;
     margin-bottom: 20px ;
+}
+#screen-input{
+    padding-left: 10px;
+    font-size: 25px;
+    border: 2px solid black;
+    height: 100%;
+    width: 100%;
 }
 
 .button-grid{
