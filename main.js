@@ -30,12 +30,10 @@ function operate(num1,num2,operator){
     return result;
 }
 
-screen = document.querySelector('#screen-input');
-all_clear_button = document.querySelector('.all-clear');
-all_clear_button.addEventListener('click', ()=>screen.value = '');
+const screen = document.querySelector('#screen-input');
 
 const digits = document.querySelectorAll('.digits');
-digits.forEach(digit=> digit.addEventListener('click', ()=>screen.value += digit.textContent ));
+digits.forEach(digit=> digit.addEventListener('click', digitClick ));
 
 const operators = document.querySelectorAll('.operators');
 operators.forEach(operator => operator.addEventListener('click', operatorClick));
@@ -44,26 +42,54 @@ let num1 = null;
 let num2 = null;
 let operator = null;
 const operatorRegex = /[+\-/*%]/;
+
 function operatorClick(event){
     if (operatorRegex.test(screen.value)){
-        values = screen.value.split(operatorRegex);
-        num2 = values[1];
         result = operate(num1,num2,operator);
         num1 = result;
         operator = event.target.textContent;
         screen.value = result + operator;
         num2 = null;   
     }else{
-        num1 = screen.value;
         operator = event.target.textContent;
         screen.value+=event.target.textContent;
     }
 }
 
+function digitClick(event){
+    if (operatorRegex.test(screen.value)){
+        num2 = (num2===null)?event.target.textContent:num2+=event.target.textContent;
+    }else{
+        num1 = (num1===null)?event.target.textContent:num1+=event.target.textContent;
+    }
+    screen.value += event.target.textContent;
+}
+
 equals_button = document.querySelector('.equals');
 equals_button.addEventListener('click', ()=>{
-    values = screen.value.split(operatorRegex);
-    num2 = values[1];
     result = operate(num1,num2,operator);
     screen.value = result;
+    num1 = result;
+    num2 = null;
 })
+
+all_clear_button = document.querySelector('.all-clear');
+all_clear_button.addEventListener('click', ()=>{
+    num1 = null;
+    num2 = null;
+    operator = null;
+    screen.value='';
+});
+
+clear_button = document.querySelector('.clear');
+clear_button.addEventListener('click', clear);
+function clear(){
+    if (operatorRegex.test(screen.value.slice(-1))){
+        operator = null;
+    }else if (operatorRegex.test(screen.value)){
+        num2 = num2.toString().slice(0,-1);
+    }else{
+        num1 = num1.toString().slice(0,-1);
+    }
+    screen.value = screen.value.slice(0,-1);
+}
