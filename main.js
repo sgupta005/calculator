@@ -44,15 +44,17 @@ let operator = null;
 const operatorRegex = /[+\-/*%]/;
 
 function operatorClick(event){
-    if (operatorRegex.test(screen.value)){
-        result = operate(num1,num2,operator);
-        num1 = result;
-        operator = event.target.textContent;
-        screen.value = result + operator;
-        num2 = null;   
-    }else{
-        operator = event.target.textContent;
-        screen.value+=event.target.textContent;
+    if (!operatorRegex.test(screen.value.slice(-1)) && screen.value){
+        if (operatorRegex.test(screen.value)){
+            result = operate(num1,num2,operator);
+            num1 = result;
+            operator = event.target.textContent;
+            screen.value = result + operator;
+            num2 = null;   
+        }else{
+            operator = event.target.textContent;
+            screen.value+=event.target.textContent;
+        }
     }
 }
 
@@ -67,10 +69,12 @@ function digitClick(event){
 
 equals_button = document.querySelector('.equals');
 equals_button.addEventListener('click', ()=>{
-    result = operate(num1,num2,operator);
-    screen.value = result;
-    num1 = result;
-    num2 = null;
+    if (!(num1===null || num2===null || operator===null)){
+        result = operate(num1,num2,operator);
+        screen.value = result;
+        num1 = result;
+        num2 = null;
+    }
 })
 
 all_clear_button = document.querySelector('.all-clear');
