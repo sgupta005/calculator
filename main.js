@@ -49,38 +49,41 @@ let operator = null;
 const operatorRegex = /[+\-/*%]/;
 
 function operatorClick(event){
+    let key = event.target.textContent || event.key;
     if (!operatorRegex.test(screen.value.slice(-1)) && screen.value){
         if (operatorRegex.test(screen.value)){
             result = operate(num1,num2,operator);
             num1 = result;
-            operator = event.target.textContent;
+            operator = key;
             screen.value = result + operator;
             num2 = null;   
         }else{
-            operator = event.target.textContent;
-            screen.value+=event.target.textContent;
+            operator = key;
+            screen.value+=key;
         }
     }
 }
 
 function digitClick(event){
+    let key = event.target.textContent || event.key;
     if (operatorRegex.test(screen.value)){
-        num2 = (num2===null)?event.target.textContent:num2+=event.target.textContent;
+        num2 = (num2===null)?key:num2+=key;
     }else{
-        num1 = (num1===null)?event.target.textContent:num1+=event.target.textContent;
+        num1 = (num1===null)?key:num1+=key;
     }
-    screen.value += event.target.textContent;
+    screen.value += key;
 }
 
 equals_button = document.querySelector('.equals');
-equals_button.addEventListener('click', ()=>{
+equals_button.addEventListener('click', equalsClick)
+function equalsClick(){
     if (!(num1===null || num2===null || operator===null)){
         result = operate(num1,num2,operator);
         screen.value = result;
         num1 = result;
         num2 = null;
     }
-})
+}
 
 all_clear_button = document.querySelector('.all-clear');
 all_clear_button.addEventListener('click', ()=>{
@@ -115,3 +118,19 @@ function decimalClick(event){
         screen.value += event.target.textContent;
     }
 }
+
+screen.addEventListener('keydown', function(event){
+    event.preventDefault();
+    const key = event.key;
+    const digits = '0,1,2,3,4,5,6,7,8,9';
+    if (operatorRegex.test(key)){
+        operatorClick(event);
+    }else if (digits.includes(key)){
+        digitClick(event);
+    }else if (key==='Enter'){
+        equalsClick();
+    }else if (key==='Backspace'){
+        clear();        
+    }
+})
+
